@@ -1,0 +1,83 @@
+name: Check Flutter compatibility
+description: Check to see if your Dart project is compatible with Flutter
+author: Aaron Madlon-Kay
+branding:
+  icon: heart
+  color: blue
+
+inputs:
+  pubspec:
+    description: The pubspec.yaml file to check for Flutter compatibility
+    required: false
+    default: "pubspec.yaml"
+  # Below are all inputs for the subosito/flutter-action action
+  channel:
+    description: The Flutter build release channel
+    required: false
+    default: stable
+  flutter-version:
+    description: The Flutter version to make available on the path
+    required: false
+    default: ""
+  flutter-version-file:
+    description: The pubspec.yaml file with exact Flutter version defined
+    required: false
+    default: ""
+  architecture:
+    description: The architecture of Flutter SDK executable (x64 or arm64)
+    required: false
+    default: "${{ runner.arch }}"
+  cache:
+    description: Cache the Flutter SDK
+    required: false
+    default: "false"
+  cache-key:
+    description: Identifier for the Flutter SDK cache
+    required: false
+    default: ""
+  cache-path:
+    description: Flutter SDK cache path
+    required: false
+    default: ""
+  pub-cache-key:
+    description: Identifier for the Dart .pub-cache cache
+    required: false
+    default: ""
+  pub-cache-path:
+    description: Flutter pub cache path
+    required: false
+    default: default
+  dry-run:
+    description: If true, get outputs but do not install Flutter
+    required: false
+    default: "false"
+  git-source:
+    description: Git clone source
+    required: false
+    default: "https://github.com/flutter/flutter.git"
+
+runs:
+  using: composite
+  steps:
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: ${{ inputs.channel }}
+        flutter-version: ${{ inputs.flutter-version }}
+        flutter-version-file: ${{ inputs.flutter-version-file }}
+        architecture: ${{ inputs.architecture }}
+        cache: ${{ inputs.cache }}
+        cache-key: ${{ inputs.cache-key }}
+        cache-path: ${{ inputs.cache-path }}
+        pub-cache-key: ${{ inputs.pub-cache-key }}
+        pub-cache-path: ${{ inputs.pub-cache-path }}
+        dry-run: ${{ inputs.dry-run }}
+        git-source: ${{ inputs.git-source }}
+    - run: |
+          if [ ! -f "${{ inputs.pubspec }}" ]; then
+            echo "pubspec.yaml not found"
+            exit 1
+          fi
+          $GITHUB_ACTION_PATH/flutterize "${{ inputs.pubspec }}"
+          cd $(dirname "${{ inputs.pubspec }}") || exit 1
+          flutter pub get
+      shell: bash
