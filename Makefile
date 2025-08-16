@@ -1,11 +1,7 @@
-flutter := $(shell command -v fvm) flutter
-
 .PHONY: test
 test:
-	cd test/compatible_project && ../../flutterize && $(flutter) pub get
-	cd test/incompatible_project && ../../flutterize && $(flutter) pub get; [ $$? -eq 1 ]
-	git checkout -- test
-
+	./flutterize test/compatible_project/pubspec.yaml
+	./flutterize test/incompatible_project/pubspec.yaml; [ $$? -ne 0 ]
 
 .PHONY: help
 help: ## Show this help text

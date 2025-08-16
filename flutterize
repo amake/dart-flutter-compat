@@ -1,3 +1,18 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-yq -i '.environment.flutter = ">0.0.0" | .dev_dependencies.flutter_test.sdk = "flutter"' ${1:-pubspec.yaml}
+set +e
+flutter="$(command -v fvm) flutter"
+set -e
+
+pubspec="$1"
+
+# We depend on subosito/flutter-action, which provides yq
+pkg_name=$(yq '.name' "$pubspec")
+pkg_dir=$(dirname "$pubspec")
+
+app_dir=$(mktemp -d)/example
+
+$flutter create "$app_dir"
+trap 'rm -rf "$app_dir"' EXIT ERR
+
+$flutter pub add "$pkg_name:{path: $pkg_dir}" --directory="$app_dir"
