@@ -47,4 +47,4 @@ jobs:
         channel: stable
         flutter-version: 3.35.x
         cache: true
-    - run: make test flutter=flutter
+    - run: make test
