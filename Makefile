@@ -1,11 +1,10 @@
-flutter_version := 3.35.0
 flutter := $(shell command -v fvm) flutter
 
 .PHONY: test
 test:
 	cd test/compatible_project && ../../flutterize && $(flutter) pub get
 	cd test/incompatible_project && ../../flutterize && $(flutter) pub get; [ $$? -eq 1 ]
-	git checkout test
+	git checkout -- test
 
 
 .PHONY: help
