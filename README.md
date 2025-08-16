@@ -27,4 +27,13 @@ steps:
   - uses: amake/dart-flutter-compat@v0
     with:
       channel: stable
+      cache: true # optional
 ```
+
+This action installs Flutter, which can take a significant amount of time
+(observed to be about 1min on ubuntu-latest as of August 2025). Ways to address
+this:
+
+- Specify `cache: true` (observed to reduce time on warm runs to about 30s on
+  ubuntu-latest as of August 2025)
+- Run this action as a separate (parallel) job from the rest of your CI jobs
