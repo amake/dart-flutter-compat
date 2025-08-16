@@ -1,0 +1,44 @@
+name: test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test_action:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./
+      id: compatible-test
+      with:
+        pubspec: test/compatible_project/pubspec.yaml
+        channel: stable
+        flutter-version: 3.35.x
+    - uses: ./
+      id: incompatible-test
+      with:
+        pubspec: test/incompatible_project/pubspec.yaml
+        channel: stable
+        flutter-version: 3.35.x
+      continue-on-error: true
+    - name: Check results
+      if: steps.compatible-test.outcome != 'success' || steps.incompatible-test.outcome != 'failure'
+      run: exit 1
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: 3.35.x
+    - run: make test flutter=flutter
