@@ -23,6 +23,7 @@ jobs:
         pubspec: test/compatible_project/pubspec.yaml
         channel: stable
         flutter-version: 3.35.x
+        cache: true
     - uses: ./
       id: incompatible-test
       with:
