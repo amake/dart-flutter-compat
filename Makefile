@@ -1,8 +1,8 @@
 .PHONY: test
 test: ## Run tests
 test:
-	./flutterize test/compatible_project/pubspec.yaml
-	./flutterize test/incompatible_project/pubspec.yaml; [ $$? -ne 0 ]
+	./check-flutter-compat test/compatible_project/pubspec.yaml
+	./check-flutter-compat test/incompatible_project/pubspec.yaml; [ $$? -ne 0 ]
 
 .PHONY: help
 help: ## Show this help text

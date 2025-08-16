@@ -37,3 +37,9 @@ this:
 - Specify `cache: true` (observed to reduce time on warm runs to about 30s on
   ubuntu-latest as of August 2025)
 - Run this action as a separate (parallel) job from the rest of your CI jobs
+
+## Other
+
+The [check-flutter-compat](./check-flutter-compat) script can be used as a
+standalone tool for checking Flutter compatibility outside of the context of
+GitHub Actions.

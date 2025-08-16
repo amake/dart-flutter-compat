@@ -77,5 +77,5 @@ runs:
             echo "pubspec.yaml not found"
             exit 1
           fi
-          $GITHUB_ACTION_PATH/flutterize "${{ inputs.pubspec }}"
+          $GITHUB_ACTION_PATH/check-flutter-compat "${{ inputs.pubspec }}"
       shell: bash

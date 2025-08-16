@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+for cmd in yq flutter; do
+    command -v "$cmd" >/dev/null 2>&1 || {
+        echo "$cmd is required but not installed. Please install $cmd." >&2
+        exit 1
+    }
+done
+
+if [[ -z "$1" ]]; then
+    echo "Usage: $0 <path/to/pubspec.yaml>..." >&2
+    exit 1
+fi
+
+set +e
+# Opportunistically use fvm if available
+flutter="$(command -v fvm) flutter"
+set -e
+
+check_one() {
+    pubspec="$1"
+
+    if [[ ! -f "$pubspec" ]]; then
+        echo "File not found: $pubspec" >&2
+        exit 1
+    fi
+
+    pkg_name=$(yq '.name' "$pubspec")
+    pkg_dir=$(dirname "$pubspec")
+
+    app_dir=$(mktemp -d)/example
+
+    $flutter create "$app_dir" >/dev/null
+    trap 'rm -rf "$app_dir"' EXIT ERR
+
+    $flutter pub add "$pkg_name:{path: $pkg_dir}" --directory="$app_dir"
+}
+
+for pubspec in "$@"; do
+    check_one "$pubspec"
+done
