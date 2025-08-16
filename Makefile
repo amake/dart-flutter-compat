@@ -1,4 +1,5 @@
 .PHONY: test
+test: ## Run tests
 test:
 	./flutterize test/compatible_project/pubspec.yaml
 	./flutterize test/incompatible_project/pubspec.yaml; [ $$? -ne 0 ]
