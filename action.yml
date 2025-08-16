@@ -79,5 +79,6 @@ runs:
           fi
           $GITHUB_ACTION_PATH/flutterize "${{ inputs.pubspec }}"
           cd $(dirname "${{ inputs.pubspec }}") || exit 1
+          trap 'git checkout -- pubspec.* && dart pub get' ERR EXIT
           flutter pub get
       shell: bash

@@ -33,6 +33,10 @@ jobs:
     - name: Check results
       if: steps.compatible-test.outcome != 'success' || steps.incompatible-test.outcome != 'failure'
       run: exit 1
+    - name: Check cleanup
+      shell: bash
+      run: |
+          [ -z "$(git status --porcelain)" ]
   test:
     runs-on: ubuntu-latest
     steps:
