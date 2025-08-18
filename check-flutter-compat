@@ -17,6 +17,9 @@ set +e
 flutter="$(command -v fvm) flutter"
 set -e
 
+to_cleanup=()
+trap '(( ${#to_cleanup[@]} > 0 )) && rm -rf "${to_cleanup[@]}"' EXIT ERR
+
 check_one() {
     pubspec="$1"
 
@@ -29,9 +32,9 @@ check_one() {
     pkg_dir=$(dirname "$pubspec")
 
     app_dir=$(mktemp -d)/example
+    to_cleanup+=("$app_dir")
 
     $flutter create "$app_dir" >/dev/null
-    trap 'rm -rf "$app_dir"' EXIT ERR
 
     $flutter pub add "$pkg_name:{path: $pkg_dir}" --directory="$app_dir"
 }
