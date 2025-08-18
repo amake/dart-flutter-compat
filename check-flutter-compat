@@ -25,7 +25,7 @@ check_one() {
         exit 1
     fi
 
-    pkg_name=$(yq '.name' "$pubspec")
+    pkg_name=$(yq -r '.name' "$pubspec")
     pkg_dir=$(dirname "$pubspec")
 
     app_dir=$(mktemp -d)/example
