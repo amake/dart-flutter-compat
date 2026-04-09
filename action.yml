@@ -77,6 +77,10 @@ runs:
         pub-cache-path: ${{ inputs.pub-cache-path }}
         dry-run: ${{ inputs.dry-run }}
         git-source: ${{ inputs.git-source }}
+    - name: Make yq tool available on Windows runners
+      if: runner.os == 'Windows'
+      run: choco install yq
+      shell: bash
     - run: |
           if [ ! -f "${{ inputs.pubspec }}" ]; then
             echo "pubspec.yaml not found"
