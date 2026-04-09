@@ -39,6 +39,10 @@ inputs:
     description: Flutter SDK cache path
     required: false
     default: ""
+  pub-cache:
+    description: Cache the Dart pub dependencies
+    required: false
+    default: ""
   pub-cache-key:
     description: Identifier for the Dart .pub-cache cache
     required: false
@@ -68,6 +72,7 @@ runs:
         cache: ${{ inputs.cache }}
         cache-key: ${{ inputs.cache-key }}
         cache-path: ${{ inputs.cache-path }}
+        pub-cache: ${{ inputs.pub-cache }}
         pub-cache-key: ${{ inputs.pub-cache-key }}
         pub-cache-path: ${{ inputs.pub-cache-path }}
         dry-run: ${{ inputs.dry-run }}
