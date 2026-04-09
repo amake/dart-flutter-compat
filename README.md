@@ -23,8 +23,8 @@ project doesn't use Flutter!
 ```yaml
 steps:
   - name: Clone repository
-    uses: actions/checkout@v4
-  - uses: amake/dart-flutter-compat@v0
+    uses: actions/checkout@v6
+  - uses: amake/dart-flutter-compat@v1
     with:
       channel: stable
       cache: true # optional
